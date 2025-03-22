@@ -1,8 +1,8 @@
 
-# 🧠 SmartOffice Bildverarbeitung – Prototyp v0.1
+# 🧠 SmartOffice
 
-Dies ist ein modularer Rapid-Prototyp für die KI-gestützte Bildverarbeitung im Rahmen der SmartOffice-Initiative.  
-Die Architektur basiert vollständig auf Docker-Containern und unterstützt sowohl GPU- als auch MQTT-gesteuerte Verarbeitung.
+SmartOffice ist eine modulare, KI-gestützte Plattform zur digitalen Verwaltung von Dokumenten, Bildern und anderen relevanten Informationen – lokal, hybrid oder in der Cloud.
+Ziel ist es, ein vollständig integriertes, intelligentes System für das papierlose Büro der Zukunft zu schaffen – technisch schlank, erweiterbar und datenschutzfreundlich.
 
 ---
 
@@ -27,7 +27,7 @@ Die Architektur basiert vollständig auf Docker-Containern und unterstützt sowo
 
 ### 📂 Verzeichnisstruktur
 
-```
+```text
 .
 ├── docker-compose.yml
 ├── .env
@@ -58,7 +58,7 @@ docker compose up -d
 Damit der `ollama`-Container die GPU nutzen kann, muss **das NVIDIA Container Toolkit** installiert sein:
 
 👉 Anleitung:  
-https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html
+<https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html>
 
 ### Prüfung
 
@@ -105,6 +105,7 @@ docker info | grep -i nvidia
 Aktuelle Version: **v0.1 – Rapid Prototype**
 
 Geplant:
+
 - [ ] Frontend (Upload + Vorschau)
 - [ ] Ähnlichkeitsanalyse (FAISS)
 - [ ] Automatisches Tagging
@@ -115,11 +116,11 @@ Geplant:
 ## 🧪 Test
 
 Nach dem Start erreichst du das Backend unter:  
-📍 http://localhost:8000/docs (Swagger-UI für API-Test)
+📍 <http://localhost:8000/docs> (Swagger-UI für API-Test)
 
 ---
 
 ## 🧊 Kontakt / Weiterentwicklung
 
 Ziel ist eine modulare, lokale oder cloudbasierte SmartOffice-Lösung für Einzelanwender und KMU.  
-Fragen, Ideen oder Erweiterungen? → [Dein Kontakt oder Git-Repo hier]
+Fragen, Ideen oder Erweiterungen?
