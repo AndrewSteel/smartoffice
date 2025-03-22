@@ -1,0 +1,84 @@
+version: "3.9"
+
+services:
+  backend:
+    build: ./backend
+    container_name: backend
+    networks:
+      - smartoffice-net
+    ports:
+      - "8000:8000"
+    environment:
+      - MONGO_URL=mongodb://mongo:27017
+      - MQTT_BROKER=mqtt
+    volumes:
+      - ./shared/uploads:/app/uploads
+
+  ollama-client:
+    build: ./ollama-client
+    container_name: ollama-client
+    networks:
+      - smartoffice-net
+    environment:
+      - MONGO_URL=mongodb://mongo:27017
+      - MQTT_BROKER=mqtt
+      - OLLAMA_API_URL=http://ollama:11434
+    volumes:
+      - ./shared/uploads:/app/uploads
+
+  mongo:
+    image: mongo:6
+    container_name: mongo
+    restart: always
+    networks:
+      - smartoffice-net
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+
+  mqtt:
+    image: eclipse-mosquitto
+    container_name: mqtt
+    restart: always
+    networks:
+      - smartoffice-net
+    ports:
+      - "1884:1883"   # Host-Port : Container-Port
+      - "9002:9001"
+    volumes:
+      - ./mosquitto/config:/mosquitto/config
+      - ./mosquitto/data:/mosquitto/data
+
+  ollama:
+    image: ollama/ollama
+    container_name: ollama
+    restart: always
+    networks:
+      - smartoffice-net
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama-data:/root/.ollama
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - capabilities: [gpu]
+    runtime: nvidia  # Voraussetzung: NVIDIA Container Toolkit installiert
+
+  frontend:
+    build: ./frontend
+    container_name: frontend
+    networks:
+      - smartoffice-net
+    ports:
+      - "8080:80"
+
+networks:
+  smartoffice-net:
+    driver: bridge
+
+volumes:
+  mongo_data:
+  ollama-data:

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <title>SmartOffice Bildverarbeitung</title>
+  <style>
+    body { font-family: sans-serif; padding: 20px; }
+    .entry { margin-bottom: 1em; padding: 1em; border: 1px solid #ccc; }
+  </style>
+</head>
+<body>
+  <h1>📷 SmartOffice – Bild Upload & Analyse</h1>
+
+  <form id="uploadForm">
+    <input type="file" name="file" required>
+    <button type="submit">Hochladen</button>
+  </form>
+
+  <h2>📝 Bilder & Beschreibungen</h2>
+  <div id="imageList">Lade Daten...</div>
+
+  <script>
+    const backendUrl = "http://localhost:8000";
+
+    document.getElementById("uploadForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const formData = new FormData(e.target);
+      const res = await fetch(backendUrl + "/upload/", {
+        method: "POST",
+        body: formData
+      });
+      if (res.ok) {
+        alert("Bild erfolgreich hochgeladen!");
+        loadImages();
+      } else {
+        alert("Fehler beim Hochladen.");
+      }
+    });
+
+    async function loadImages() {
+      const res = await fetch(backendUrl + "/images/");
+      const data = await res.json();
+      const container = document.getElementById("imageList");
+      container.innerHTML = "";
+      data.forEach(img => {
+        const div = document.createElement("div");
+        div.className = "entry";
+        div.innerHTML = `
+          <strong>${img.filename}</strong><br>
+          <em>${img.description || "…wird verarbeitet…"}</em>
+        `;
+        container.appendChild(div);
+      });
+    }
+
+    loadImages();
+    setInterval(loadImages, 10000); // Alle 10 Sek. neu laden
+  </script>
+</body>
+</html>
